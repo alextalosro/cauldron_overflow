@@ -18,8 +18,11 @@
             {{ answer.content|parse_markdown }}
             <p>-- {{ answer.username }}</p>
         </div>
+
         <div class="col-2 text-end">
             <small>{{ answer.createdAt|ago }}</small>
+
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <div
                 class="vote-arrows"
                 {{ stimulus_controller('answer-vote', {
@@ -43,5 +46,6 @@
                 <span><span {{ stimulus_target('answer-vote', 'voteTotal') }}>{{ answer.votes }}</span></span>
             </div>
         </div>
+        {% endif %}
     </div>
 </li>

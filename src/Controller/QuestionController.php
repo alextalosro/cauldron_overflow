@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,9 +46,12 @@ class QuestionController extends AbstractController
 
     /**
      * @Route("/questions/new")
+     * @IsGranted("ROLE_USER")
      */
     public function new()
     {
+		$this->denyAccessUnlessGranted('ROLE_USER');
+		
         return new Response('Sounds like a GREAT feature for V2!');
     }
 
@@ -64,7 +68,21 @@ class QuestionController extends AbstractController
             'question' => $question,
         ]);
     }
-
+	
+	/**
+	 * @Route("/questions/edit/{slug}", name="app_question_edit")
+	 */
+	public function edit(Question $question)
+	{
+		if ($this->isDebug) {
+			$this->logger->info('We are in debug mode!');
+		}
+		
+		return $this->render('question/show.html.twig', [
+			'question' => $question,
+		]);
+	}
+	
     /**
      * @Route("/questions/{slug}/vote", name="app_question_vote", methods="POST")
      */
