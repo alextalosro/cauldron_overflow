@@ -74,11 +74,9 @@ class QuestionController extends AbstractController
 	 */
 	public function edit(Question $question)
 	{
-		if ($this->isDebug) {
-			$this->logger->info('We are in debug mode!');
-		}
+		$this->denyAccessUnlessGranted('EDIT', $question);
 		
-		return $this->render('question/show.html.twig', [
+		return $this->render('question/edit.html.twig', [
 			'question' => $question,
 		]);
 	}
