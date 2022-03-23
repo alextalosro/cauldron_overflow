@@ -2,11 +2,20 @@
     "babdev/pagerfanta-bundle": {
         "version": "v3.3.0"
     },
+    "bacon/bacon-qr-code": {
+        "version": "2.0.7"
+    },
+    "beberlei/assert": {
+        "version": "v3.3.2"
+    },
     "behat/transliterator": {
         "version": "v1.3.0"
     },
     "composer/package-versions-deprecated": {
         "version": "1.11.99"
+    },
+    "dasprid/enum": {
+        "version": "1.0.3"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -103,6 +112,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.0"
     },
+    "endroid/qr-code": {
+        "version": "3.9.7"
+    },
     "fakerphp/faker": {
         "version": "v1.13.0"
     },
@@ -111,6 +123,9 @@
     },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.41"
+    },
+    "khanamiryan/qrcode-detector-decoder": {
+        "version": "1.0.5.2"
     },
     "knplabs/knp-markdown-bundle": {
         "version": "1.8.1"
@@ -127,6 +142,9 @@
     "monolog/monolog": {
         "version": "2.0.2"
     },
+    "myclabs/php-enum": {
+        "version": "1.8.3"
+    },
     "nikic/php-parser": {
         "version": "v4.3.0"
     },
@@ -138,6 +156,9 @@
     },
     "pagerfanta/twig": {
         "version": "v3.3.0"
+    },
+    "paragonie/constant_time_encoding": {
+        "version": "v2.5.0"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -151,6 +172,25 @@
     "psr/log": {
         "version": "1.1.2"
     },
+    "scheb/2fa-bundle": {
+        "version": "5.13",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "0a83961ef50ff91812b229a6f0caf28431d94aec"
+        },
+        "files": [
+            "./config/packages/scheb_2fa.yaml",
+            "./config/routes/scheb_2fa.yaml"
+        ]
+    },
+    "scheb/2fa-qr-code": {
+        "version": "v5.13.1"
+    },
+    "scheb/2fa-totp": {
+        "version": "v5.13.1"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -162,6 +202,9 @@
         "files": [
             "config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "spomky-labs/otphp": {
+        "version": "v10.0.3"
     },
     "stof/doctrine-extensions-bundle": {
         "version": "1.2",
@@ -499,6 +542,9 @@
     },
     "symfonycasts/verify-email-bundle": {
         "version": "v1.10.0"
+    },
+    "thecodingmachine/safe": {
+        "version": "v2.1.2"
     },
     "twig/extra-bundle": {
         "version": "v3.0.1"
