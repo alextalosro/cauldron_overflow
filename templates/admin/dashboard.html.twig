@@ -3,6 +3,27 @@
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block body %}
+
+<h1 class="text-lg font-bold mb-8 pb-2 border-b">
+Dash Board
+</h1>
+
+<div class="flex">
+    <aside class="w-48 flex-shrink-0">
+        <h4 class="font-semibold mb-4">Links</h4>
+        <ul>
+            <li>
+                <a href="{{ path('admin_questions') }}" class=" text-blue-500 active: ">All Posts</a>
+            </li>
+            <li>
+                <a href="/admin/answers" class=" text-blue-500 active: ">All Answers</a>
+            </li>
+            <li>
+                <a href="/admin/posts/edit" class=" text-blue-500 active: ">New Post</a>
+            </li>
+        </ul>
+    </aside>
+
 <div class="container my-md-4">
     <div class="d-flex justify-content-between">
         <h1>Very Important Admin Stats</h1>
