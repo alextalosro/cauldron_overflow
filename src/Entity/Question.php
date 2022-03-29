@@ -52,13 +52,13 @@ class Question
     private $votes = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", fetch="EXTRA_LAZY", cascade={"remove"})
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $answers;
 
     /**
-     * @ORM\OneToMany(targetEntity=QuestionTag::class, mappedBy="question")
+     * @ORM\OneToMany(targetEntity=QuestionTag::class, mappedBy="question", cascade={"remove"})
      */
     private $questionTags;
 
@@ -67,6 +67,12 @@ class Question
      * @ORM\JoinColumn(nullable=false)
      */
     private $owner;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPublished;
+	
 
     public function __construct()
     {
@@ -233,6 +239,18 @@ class Question
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getIsPublished(): ?bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished(bool $isPublished): self
+    {
+        $this->isPublished = $isPublished;
 
         return $this;
     }

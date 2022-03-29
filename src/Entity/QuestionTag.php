@@ -18,7 +18,7 @@ class QuestionTag
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="questionTags")
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="questionTags", cascade={"remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $question;

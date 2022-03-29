@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Question;
+use App\Repository\QuestionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
@@ -11,7 +15,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin_dashboard")
+     * @Route("/admin/dashboard", name="admin_dashboard")
      */
     public function dashboard(ChartBuilderInterface $chartBuilder)
     {
@@ -72,4 +76,90 @@ class AdminController extends AbstractController
 		
 		return new Response('Pretend admin answer page');
 	}
+	
+	/**
+	 * @Route("/admin/questions", name="admin_questions")
+	 */
+	public function index(QuestionRepository $repository)
+	{
+		$questions = $repository->findAll();
+		
+		return $this->render('admin/questions.html.twig', [
+			'questions' => $questions,
+		]);
+	}
+	
+	/**
+	 * @Route("admin/questions/edit/{slug}", name="admin_app_question_edit")
+	 */
+	public function edit(Question $question)
+	{
+		return $this->render('question/edit.html.twig', [
+			'question' => $question,
+		]);
+	}
+	
+	/**
+	 * @Route("admin/questions/update/{slug}", name="admin_app_question_update")
+	 */
+	public function update(Question $question, EntityManagerInterface $entityManager,Request $request)
+	{
+		
+		$question->setName($request->request->get('name'));
+		$question->setSlug($request->request->get('slug'));
+		$question->setQuestion($request->request->get('question'));
+		
+		$entityManager->flush();
+		
+		return $this->render('question/show.html.twig', [
+			'question' => $question,
+		]);
+	}
+	
+	/**
+	 * @Route("admin/questions/delete/{slug}", name="admin_app_question_delete")
+	 */
+	public function delete(Question $question, EntityManagerInterface $entityManager)
+	{
+		$entityManager->remove($question);
+		$entityManager->flush();
+
+		return $this->redirectToRoute('admin_questions');
+	}
+	
+	/**
+	 * @Route("admin/questions/publish/{slug}", name="admin_app_question_publish")
+	 */
+	public function publish(Question $question, EntityManagerInterface $entityManager)
+	{
+		($question->getIsPublished() ? $question->setIsPublished(0) : $question->setIsPublished(1));
+		$entityManager->flush();
+		
+		$this->addFlash('success', 'Status changed!');
+		return $this->redirectToRoute('admin_questions');
+	}
+	
+	/**
+	 * @Route("admin/questions/create", name="admin_app_question_create")
+	 */
+	public function create()
+	{
+		return view('admin.posts.create');
+	}
+	
+	/**
+	 * @Route("admin/questions/publish/{slug}", name="admin_app_question_publish")
+	 */
+	public function store()
+	{
+		
+		Post::create(array_merge($this->validatePost(), [
+			'user_id' => request()->user()->id,
+			'thumbnail' => request()->file('thumbnail')->store('thumbnails'),
+			'view_count' => 0
+		]));
+		
+		return redirect('/');
+	}
+
 }

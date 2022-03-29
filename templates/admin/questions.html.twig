@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div style="margin: 100px">
+                    <table class="min-w-full divide-y divide-gray-200 table table-bordered border-2 border-dark" style="border: 2px">
+                        <thead class="bg-secondary">
+                        <tr>
+                            <th scope="col" class="text-start">Slug</th>
+                            <th scope="col" class="text-end">Edit</th>
+                            <th scope="col" class="text-end">Delete</th>
+                            <th scope="col" class="text-end">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        {% for question in questions %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        <a href="/questions/{{ question.slug }}">
+                                            {{ question.name }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="/admin/questions/edit/{{ question.slug }}" class="text-blue-500 hover:text-blue-600">Edit</a>
+                            </td>
+
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <form method="POST" action="/admin/questions/delete/{{ question.slug }}">
+
+
+                                    <button class="text-xs text-gray-400">Delete</button>
+                                </form>
+                            </td>
+
+                            {% if(question.isPublished) %}
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <form method="POST" action="/admin/questions/publish/{{ question.slug }}">
+
+
+                                    <button class="text-xs text-white btn btn-success rounded-full py-0.4 px-1">Published</button>
+                                </form>
+                            </td>
+                            {% else %}
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <form method="POST" action="/admin/questions/publish/{{ question.slug}}">
+
+
+                                    <button class="text-xs text-white btn btn-danger rounded-full py-0.4 px-1">Unpublished</button>
+                                </form>
+                            </td>
+                            {% endif %}
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
