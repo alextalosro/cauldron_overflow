@@ -10,6 +10,9 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Unique;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass=QuestionRepository::class)
@@ -254,4 +257,13 @@ class Question
 
         return $this;
     }
+	
+	public static function loadValidatorMetadata(ClassMetadata $metadata): void
+	{
+		$metadata->addPropertyConstraint('name', new NotBlank());
+		$metadata->addPropertyConstraint('slug', new NotBlank());
+		$metadata->addPropertyConstraint('question', new NotBlank());
+		$metadata->addPropertyConstraint('owner', new NotBlank());
+	}
+	
 }

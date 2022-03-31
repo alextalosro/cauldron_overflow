@@ -6,6 +6,7 @@ use App\Entity\Question;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use App\Service\MarkdownHelper;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -15,8 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class QuestionController extends AbstractController
+class QuestionController extends BaseController
 {
     private $logger;
     private $isDebug;
@@ -45,15 +47,52 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("/questions/new")
+     * @Route("/questions/new", name="app_question_create")
      * @IsGranted("ROLE_USER")
      */
-    public function new()
+    public function new(Request $request)
     {
 		$this->denyAccessUnlessGranted('ROLE_USER');
-		
-        return new Response('Sounds like a GREAT feature for V2!');
+	
+	    return $this->render('question/create.html.twig', [
+	    'request' => $request->request,
+		    'errors'=> []
+	    ]);
     }
+	
+	/**
+	 * @Route("/questions/store", name="app_question_store")
+	 * @IsGranted("ROLE_USER")
+	 */
+	public function store(EntityManagerInterface $entityManager,
+	                      Request $request,
+	                      ValidatorInterface $validator)
+	{
+		$question = new Question();
+		
+		$question->setName($request->get('name'));
+		$question->setSlug($request->get('slug'));
+		$question->setQuestion($request->get('question'));
+		$question->setOwner($this->getUser());
+		$question->setIsPublished(0); //Need to be aproved by admin.
+		$question->setAskedAt(Carbon::now());
+		
+		$errors = $validator->validate($question);
+		
+		if (count($errors) > 0) {
+			return $this->render('question/create.html.twig', [
+				'errors' => $errors,
+				'request' => $request->request
+			]);
+		}
+		
+		$entityManager->persist($question);
+		$entityManager->flush();
+		
+		return $this->redirectToRoute('app_question_show', [
+			'slug'=> $question->getSlug()
+		]);
+	}
 
     /**
      * @Route("/questions/{slug}", name="app_question_show")
