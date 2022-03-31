@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-lg font-bold mb-8 pb-2 border-b">
+        Create Question
+    </h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+    <form method="POST" action="{{ path('app_question_store') }}" enctype="multipart/form-data">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Name</span>
+            <input type="text" class="form-control" placeholder="Name" aria-label="name" id="name" name="name" aria-describedby="basic-addon1" value="{{ request.get("name") }}">
+        </div>
+        <div>
+            <ul>
+                {% for error in errors %}
+                    {% if error.propertyPath == 'name' %}
+                        <li>{{ error.message }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Slug</span>
+            <input type="text" class="form-control" placeholder="Slug" aria-label="slug" id="slug" name="slug" aria-describedby="basic-addon1" value="{{ request.get("slug") }}">
+        </div>
+        <div>
+            <ul>
+                {% for error in errors %}
+                    {% if error.propertyPath == 'slug' %}
+                        <li>{{ error.message }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Question</span>
+            <input type="text" class="form-control" placeholder="Question" aria-label="question" name="question" id="question" aria-describedby="basic-addon1" value="{{ request.get("question") }}">
+        </div>
+        <div>
+            <ul>
+                {% for error in errors %}
+                    {% if error.propertyPath == 'question' %}
+                        <li>{{ error.message }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <button type="submit">Create</button>
+    </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block title %}
+Create Question
+{% endblock %}
+

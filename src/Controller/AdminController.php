@@ -138,28 +138,4 @@ class AdminController extends AbstractController
 		$this->addFlash('success', 'Status changed!');
 		return $this->redirectToRoute('admin_questions');
 	}
-	
-	/**
-	 * @Route("admin/questions/create", name="admin_app_question_create")
-	 */
-	public function create()
-	{
-		return view('admin.posts.create');
-	}
-	
-	/**
-	 * @Route("admin/questions/publish/{slug}", name="admin_app_question_publish")
-	 */
-	public function store()
-	{
-		
-		Post::create(array_merge($this->validatePost(), [
-			'user_id' => request()->user()->id,
-			'thumbnail' => request()->file('thumbnail')->store('thumbnails'),
-			'view_count' => 0
-		]));
-		
-		return redirect('/');
-	}
-
 }
